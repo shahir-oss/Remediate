@@ -1,3 +1,4 @@
+
 """Routes for ConiferRemediate."""
 
 import csv
@@ -6,15 +7,16 @@ import os
 import random
 
 import requests
-from flask import (Blueprint, flash, make_response, redirect, render_template,
-                   request, url_for)
+from flask import Blueprint, flash, make_response, redirect, render_template,request, url_for
 from flask_login import login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from . import db
 from .models import RemediationLog, ScanResult, Server, User
 
+
 main_bp = Blueprint('main', __name__)
+
 
 
 def simulate_cloud_discovery(provider: str, api_key: str):
@@ -140,6 +142,7 @@ def servers():
     return render_template('servers.html', servers=servers)
 
 
+
 @main_bp.route('/discover', methods=['GET', 'POST'])
 @login_required
 def discover():
@@ -194,12 +197,24 @@ def remediate_index():
     servers = Server.query.filter(Server.cve.isnot(None)).all()
     return render_template('remediate.html', servers=servers)
 
+@main_bp.route('/scan/<int:server_id>')
+@login_required
+def scan(server_id):
+    server = Server.query.get_or_404(server_id)
+    # Placeholder for OpenVAS integration
+    server.cve = 'CVE-2024-0001'
+    db.session.commit()
+    flash(f'Scan completed for {server.name}')
+    return redirect(url_for('main.servers'))
+
+
 
 @main_bp.route('/remediate/<int:server_id>', methods=['POST'])
 @login_required
 def remediate(server_id):
     server = Server.query.get_or_404(server_id)
     action = request.form['action']
+
     cve = server.cve.split(',')[0]
     summary, details = call_remediation_api(cve, server.os_type)
     log = RemediationLog(server_id=server.id, cve=cve, os_type=server.os_type,
@@ -237,4 +252,5 @@ def export_reports():
     response.headers['Content-Disposition'] = 'attachment; filename=report.csv'
     response.headers['Content-type'] = 'text/csv'
     return response
+
 

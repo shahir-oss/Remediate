@@ -23,6 +23,7 @@ class Server(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
+
 class ScanResult(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     server_id = db.Column(db.Integer, db.ForeignKey('server.id'), nullable=False)

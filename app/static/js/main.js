@@ -1,6 +1,7 @@
 // Placeholder for custom JS
 console.log('ConiferRemediate loaded');
 
+
 document.querySelectorAll('.result-link').forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
