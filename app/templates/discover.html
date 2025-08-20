@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Discover</h2>
+<form method="post" class="row g-2 mb-3">
+  <div class="col-md-3">
+    <select name="provider" class="form-select">
+      <option value="Azure">Azure</option>
+      <option value="GCP">GCP</option>
+    </select>
+  </div>
+  <div class="col-md-6">
+    <input name="api_key" class="form-control" placeholder="API Key" required>
+  </div>
+  <div class="col-md-3">
+    <button class="btn btn-primary w-100" type="submit">Discover</button>
+  </div>
+</form>
+<table class="table table-dark table-striped">
+  <tr><th>Name</th><th>IP</th><th>OS</th><th>Tag</th></tr>
+  {% for s in servers %}
+  <tr><td>{{ s.name }}</td><td>{{ s.ip_address }}</td><td>{{ s.os }}</td><td>{{ s.tag }}</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
+

@@ -1,23 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Dashboard</h1>
-<div class="stats">
-    <div class="card">Total Servers: {{ servers|length }}</div>
-    <div class="card">Vulnerable: {{ servers|selectattr('cve')|list|length }}</div>
+
+<h1 class="mb-4">Dashboard</h1>
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card p-3 text-center">Total Servers: {{ total }}</div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3 text-center">Vulnerable: {{ vulnerable }}</div>
+    </div>
+      <div class="col-md-6">
+        <div class="card p-3 text-center">Vulnerable CVE: {{ servers|selectattr('cve')|list|length }}</div>
+    </div>
 </div>
+
 <canvas id="vulnChart"></canvas>
+
 <script>
 const ctx = document.getElementById('vulnChart');
 new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['Servers','Vulnerable'],
+        labels: ['Total','Vulnerable'],
         datasets: [{
-            label: 'Overview',
-            data: [{{ servers|length }}, {{ servers|selectattr('cve')|list|length }}],
+            label: 'Servers',
+            data: [{{ total }}, {{ vulnerable }}],
+
             backgroundColor: ['#2e8b57','#dc143c']
         }]
     }
 });
+
 </script>
 {% endblock %}
