@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Dashboard</h1>
+<div class="stats">
+    <div class="card">Total Servers: {{ servers|length }}</div>
+    <div class="card">Vulnerable: {{ servers|selectattr('cve')|list|length }}</div>
+</div>
+<canvas id="vulnChart"></canvas>
+<script>
+const ctx = document.getElementById('vulnChart');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Servers','Vulnerable'],
+        datasets: [{
+            label: 'Overview',
+            data: [{{ servers|length }}, {{ servers|selectattr('cve')|list|length }}],
+            backgroundColor: ['#2e8b57','#dc143c']
+        }]
+    }
+});
+</script>
+{% endblock %}
