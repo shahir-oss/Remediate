@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Scan</h2>
+<table class="table table-dark table-striped">
+  <tr><th>Name</th><th>IP</th><th>OS</th><th>CVE</th><th>Action</th><th>Reports</th></tr>
+  {% for s in servers %}
+  <tr>
+    <td>{{ s.name }}</td>
+    <td>{{ s.ip_address }}</td>
+    <td>{{ s.os_type }}</td>
+    <td>{{ s.cve or '-' }}</td>
+    <td>
+      <form method="post" action="{{ url_for('main.scan_server', server_id=s.id) }}">
+        <button class="btn btn-sm btn-primary" type="submit">Scan</button>
+      </form>
+    </td>
+    <td>
+      {% for r in s.scan_results %}
+      <a href="{{ url_for('main.scan_report', result_id=r.id) }}">Report</a>
+      {% endfor %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
+

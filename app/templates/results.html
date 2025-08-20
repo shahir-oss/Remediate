@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Remediation Result</h2>
+<p><strong>Server:</strong> {{ log.server.name }}</p>
+<p><strong>Action:</strong> {{ log.action }}</p>
+<pre class="bg-dark text-light p-3">{{ log.details }}</pre>
+{% endblock %}
+

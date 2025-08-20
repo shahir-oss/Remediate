@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Remediate</h2>
+<table class="table table-dark table-striped">
+  <tr><th>Name</th><th>CVE</th><th>Action</th><th>Result</th></tr>
+  {% for s in servers %}
+  <tr>
+    <td>{{ s.name }}</td>
+    <td>{{ s.cve }}</td>
+    <td>
+      <form method="post" action="{{ url_for('main.remediate', server_id=s.id) }}" class="d-flex">
+        <select name="action" class="form-select form-select-sm me-2">
+          <option>Test Remediation</option>
+          <option>Remediate Now</option>
+          <option>Native Remediation</option>
+        </select>
+        <button class="btn btn-sm btn-primary" type="submit">Go</button>
+      </form>
+    </td>
+    <td>
+      {% for log in s.remediation_logs %}
+      {{ log.summary }} <a class="result-link" href="{{ url_for('main.results', log_id=log.id) }}">Results</a>
+      {% endfor %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
+

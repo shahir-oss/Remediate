@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="mb-4">Dashboard</h1>
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card p-3 text-center">Total Servers: {{ total }}</div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3 text-center">Vulnerable: {{ vulnerable }}</div>
+    </div>
+</div>
+<canvas id="vulnChart" class="mb-4"></canvas>
+<div id="vulnPlot"></div>
+<script>
+const ctx = document.getElementById('vulnChart');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Total','Vulnerable'],
+        datasets: [{
+            label: 'Servers',
+            data: [{{ total }}, {{ vulnerable }}],
+            backgroundColor: ['#2e8b57','#dc143c']
+        }]
+    }
+});
+Plotly.newPlot('vulnPlot', [{type:'pie', labels:['Total','Vulnerable'], values:[{{ total }}, {{ vulnerable }}]}], {margin:{t:0}});
+</script>
+{% endblock %}
